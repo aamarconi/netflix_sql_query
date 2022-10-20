@@ -36,3 +36,11 @@ SELECT * FROM netflix.director_view;
 SELECT * FROM netflix.titles
 WHERE imdb_score > (SELECT AVG(imdb_score) FROM netflix.titles);
 
+#create rollup report by year, type
+SELECT 
+IF(GROUPING(release_year),"All year",release_year), 
+IF(GROUPING(genres),"All genres",genres), 
+AVG(imdb_score) average_imdb, AVG(tmdb_score) average_tmdb_score
+	FROM netflix.titles
+GROUP BY release_year,genres WITH ROLLUP;
+
